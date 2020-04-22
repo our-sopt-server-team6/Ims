@@ -1,29 +1,13 @@
-var sopt = {
+var jsonPractice = [{
     name : "임얼쑤",
-    number : 183,
-    printName : function(){
-        console.log(this.name + this.number);
-    }
-}
+    age : "28",
+    gender: "man",
+    appearance : "handsome"
+},{
+    name:"정욱",
+    age:"25",
+    gender:"man",
+    appearance:"handsome"
+}]
 
-sopt.printName();
-
-console.log(sopt)
-console.log("",sopt)
-console.log(""+JSON.stringify(sopt))
-
-var dogs = [
-    { name: '식빵', family: '웰시코기', age: 1, weight: 2.14},
-    { name: '콩콩', family: '포메라니안', age: 3, weight: 2.5},
-    { name: '두팔', family: '푸들', age: 7, weight: 3.1}
-];
-
-
-console.log('dogs : ' + dogs);
-console.log('dogs : ', dogs);
-console.log('dogs :' + JSON.stringify(dogs));
-
-
-dogs.forEach( 
-    dog => console.log(dog.name+'이는 종이 '+dog.family+'이고, 나이가 '+dog.age+'세입니다 ~')
-    );
+jsonPractice.forEach(item=>{console.log("이름은 : " + item.name + " 나이는 : "+ item.age + " 성별은 : "+ item.gender + " 외형은 : "+item.appearance)})
