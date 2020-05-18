@@ -18,12 +18,15 @@ router.post('/signup', async (req, res) => {
             .send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
         return;
     }
-
+/*
     if (UserModel.filter(user => user.id == id).length > 0) {
         res.status(statusCode.BAD_REQUEST)
             .send(util.fail(statusCode.BAD_REQUEST, resMessage.ALREADY_ID));
         return;
     }
+    */
+
+    
     UserModel.push({
         id,
         name,
@@ -36,6 +39,15 @@ router.post('/signup', async (req, res) => {
         }));
 });
 
+const salt = 'dfw23EFVR3fefnd68FW3r4343';
+
+    const idx = await User.signup(id,name,password,salt,email);
+
+    if(idex === -1){
+        return res.status(statusCode.DB_ERROR)
+        .send(util.fail(statusCode.DB_ERROR,resMessage.DB_ERROR));
+    }
+    res.status(statusCode.OK).send(util.success(statusCode.OK,resMessage.CREATED_USER,{userId:idx}));
 /* 
     ✔️ sign in
     METHOD : POST
