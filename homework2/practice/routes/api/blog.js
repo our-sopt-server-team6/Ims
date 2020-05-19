@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router();
 
-router.get('/',(req,res)=>{
+router.get('/post',(req,res)=>{
     const post = {
         name: "임얼쑤",
         age: "15",
