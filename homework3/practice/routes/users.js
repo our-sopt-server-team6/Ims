@@ -8,6 +8,8 @@ const crypto = require('crypto');
 
 
 
+const salt = crypto.randomBytes(32).toString('hex');
+
 router.post('/signup', async (req, res) => {
     const {
         id,
@@ -27,9 +29,7 @@ router.post('/signup', async (req, res) => {
         return;
     }
 
-    const salt = crypto.randomBytes(32).toString('hex');
     const hashed = crypto.pbkdf2Sync(password,salt.toString(),5,32,'sha512').toString('hex');
-
 
     UserModel.push({
         id,
@@ -38,10 +38,12 @@ router.post('/signup', async (req, res) => {
         email,
         hashed
     });
+    
     res.status(statusCode.OK)
         .send(util.success(statusCode.OK, resMessage.CREATED_USER, {
             userId: id,
-            userPw: hashed
+            password:hashed,
+            UserModel
         }));
 });
 
@@ -58,29 +60,36 @@ router.post('/signin', async (req, res) => {
        return ;
     }
 
-    const user = UserModel.filter((u)=>{u.id==id});
+    const user = UserModel.filter(u=>u.id==id);
 
     if(user.length==0){
         res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST,resMessage.NULL_VALUE));
         return ;
     }
     
+    // const salt = crypto.randomBytes(32).toString('hex');
+    // const hashed = crypto.pbkdf2Sync(password,salt.toString(),5,32,'sha512').toString('hex');
 
-    const salt = crypto.randomBytes(32).toString('hex');
-    const hashed = crypto.pbkdf2Sync(password,salt.toString(),5,32,'sha512').toString('hex');
-
-    if(user[0].hashed!=hashed){
-        res.status(statusCode.BAD_REQUEST).send(uti.fail(statusCode.BAD_REQUEST,resMessage.MISS_MATCH_PW))
+    if(user[0].password!=password){
+        res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST,resMessage.MISS_MATCH_PW))
         return ;
     }
 
-    res.status(statusCode.OK).send(statusCode.OK,resMessage.LOGIN_SUCCESS,{userId:id,userPw:user[0].password,hashed:hashed})
-  
+    res.status(statusCode.OK).
+    send(util.success(statusCode.OK,resMessage.LOGIN_SUCCESS,{
+        userId:id,
+        pw:password
+    }))
+
+   
 });
 
 
 router.get('/', async (req, res) => {
-    res.status(statusCode.ok).send(util.success(statusCode.OK,resMessage.READ_PROFILE_SUCCESS,UserModel))
+    res.status(statusCode.OK)
+        .send(util.success(statusCode.OK, resMessage.CREATED_USER, {
+            UserModel
+        }));
 });
 
 
