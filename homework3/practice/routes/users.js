@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-let UserModel = require('../modules/user');
+let UserModel = require('../models/user');
 let util = require('../modules/util');
 let statusCode = require('../modules/statusCode');
 let resMessage = require('../modules/responseMessage');
@@ -67,9 +67,7 @@ router.post('/signin', async (req, res) => {
         return ;
     }
     
-    // const salt = crypto.randomBytes(32).toString('hex');
-    // const hashed = crypto.pbkdf2Sync(password,salt.toString(),5,32,'sha512').toString('hex');
-
+    
     if(user[0].password!=password){
         res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST,resMessage.MISS_MATCH_PW))
         return ;

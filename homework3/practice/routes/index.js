@@ -10,4 +10,4 @@ module.exports = router;
 
 
 router.use('/users',require('./users'));
-// router.use('/post',require('./post'));
+router.use('/post',require('./post'));
