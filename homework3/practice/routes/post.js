@@ -4,70 +4,70 @@ let Post = require('../models/post');
 let util = require('../modules/util');
 let statusCode = require('../modules/statusCode');
 let resMessage = require('../modules/responseMessage');
-var moment = require('moment');
 
 router.get('/', async (req, res) => {
-    const dto = await Post.readAll();
+    const data = await Post.readAll();
+
     res.status(statusCode.OK)
-        .send(util.success(statusCode.OK, resMessage.READ_POST_SUCCESS, dto));
+        .send(util.success(statusCode.OK, resMessage.READ_POST_SUCCESS, data));
 });
 
 router.get('/:idx', async (req, res) => {
     const idx = req.params.idx;
-    const dto = await Post.read(idx);
+    
     if (!idx) {
         res.status(statusCode.BAD_REQUEST)
             .send(util.fail(statusCode.BAD_REQUEST, resMessage.NO_USER));
         return;
     }
+
+    const data = await Post.read(idx);
+
     res.status(statusCode.OK)
-        .send(util.success(statusCode.OK, resMessage.READ_POST_SUCCESS, dto));
+        .send(util.success(statusCode.OK, resMessage.READ_POST_SUCCESS, data));
 });
 
 router.post('/', async (req, res) => {
     const {
         author,
         title, 
-        content
+        description
     } = req.body;
-    if (!author || !title || !content) {
+
+    if (!author || !title || !description) {
         res.status(statusCode.BAD_REQUEST)
             .send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
         return;
     }
-    var now = moment();
-    const created_at = await now.format('YYYY-MM-DD');
+
+    const data = await Post.create(author, title, description);
     
-    const idx = await Post.create(author, title, content, created_at);
-    
-    if(!idx){
+    if(!data){
         return res.status(statusCode.DB_ERROR)
         .send(util.fail(statusCode.DB_ERROR, resMessage.CREATE_FAIL));
     }
     res.status(statusCode.OK)
-        .send(util.success(statusCode.OK, resMessage.CREATE_POST_SUCCESS, idx));
+        .send(util.success(statusCode.OK, resMessage.CREATE_POST_SUCCESS, data));
 });
 
 router.put('/:idx', async (req, res) => {
     const idx = req.params.idx;
+
     const {
         author,
         title, 
-        content
+        description
     } = req.body;
     
-    var now = moment();
-    const created_at = await now.format('YYYY-MM-DD');
 
     if(!idx){
         res.status(statusCode.BAD_REQUEST)
         .send(util.fail(statusCode.BAD_REQUEST, resMessage.NO_USER));
     return;
     }
-    const updatePost = {author: author, title: title, content:content};
+    const updatePost = {author: author, title: title, description:description};
 
     const newPost = await Post.update(idx, updatePost);
-    newPost.created_at = created_at;
 
     if (!newPost) {
         return res.status(statusCode.DB_ERROR)
@@ -81,6 +81,7 @@ router.put('/:idx', async (req, res) => {
 
 router.delete('/:idx', async (req, res) => {
     const idx = req.params.idx;
+
     if (!idx) {
         res.status(statusCode.BAD_REQUEST)
             .send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
@@ -95,6 +96,5 @@ router.delete('/:idx', async (req, res) => {
         res.status(statusCode.OK)
         .send(util.success(statusCode.NO_CONTENT, resMessage.DELETE_SUCCESS));
     }
-    
 })
 module.exports = router;

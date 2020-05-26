@@ -42,8 +42,7 @@ router.post('/signup', async (req, res) => {
     res.status(statusCode.OK)
         .send(util.success(statusCode.OK, resMessage.CREATED_USER, {
             userId: id,
-            password:hashed,
-            UserModel
+            password:hashed
         }));
 });
 
