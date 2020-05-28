@@ -1,7 +1,7 @@
 # User Table
 
 | userIdx | name | id | password |
-| - | - | - | - | - |
+| - | - | - | - |
 | 0 | 임얼쑤 | ersu | 1234 |
 
 # Article Table
