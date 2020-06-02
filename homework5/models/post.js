@@ -27,6 +27,7 @@ const post = {
         const query = `SELECT * FROM ${table} WHERE authorIdx="${id}"`;
         try{
             const result = await pool.queryParam(query);
+            console.log(result)
             return result;
         }catch(err){
             if(err.errno===1062){

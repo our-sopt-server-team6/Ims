@@ -61,6 +61,7 @@ router.get('/profile/:id', async(req,res)=>{
   const id = req.params.id;
 
   const user = await User.getUserById(id);
+  
   if(user.length===0){
     res.status(statusCode.BAD_REQUEST)
     .send(util.fail(statusCode.BAD_REQUEST,responseMessage.NO_USER));

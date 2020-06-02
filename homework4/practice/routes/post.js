@@ -31,13 +31,14 @@ router.get('/:id',async(req,res)=>{
     if(!findIdx){
         res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST,responseMessage.NULL_VALUE))
     }
+
     const postData = await Post.getPostById(findIdx);
 
     if(postData.length === 0){
-        res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST,responseMessage.BAD_REQUEST))
+        res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST,responseMessage.NULL_VALUE))
     }
     
-    res.status(statusCode.OK).send(util.success(statusCode.OK,responseMessage.OK,{idx:postData}));
+    res.status(statusCode.OK).send(util.success(statusCode.OK,responseMessage.OK,postData[0]));
 })
 
 router.put('/update/:id',async(req,res)=>{
