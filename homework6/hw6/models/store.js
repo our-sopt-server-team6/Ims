@@ -2,11 +2,11 @@ const pool = require('../modules/pool')
 const table = 'store';
 
 const store = {
-    signup: async(name,address,avg_delivery_time,cheeta_delivery,rating,introduce,picture,delivery_money,category_1,category_2)=>{
+    signup: async(name,address,avg_delivery_time,cheeta_delivery,rating,introduce,picture,delivery_money,category_1Idx,category_2Idx)=>{
 
         const questions = '?,?,?,?,?,?,?,?,?,?';
-        const values = [name,address,avg_delivery_time,cheeta_delivery,rating,introduce,picture,delivery_money,category_1,category_2];
-        const fields = 'name,address,avg_delivery_time,cheeta_delivery,rating,introduce,picture,delivery_money,category_1,category_2'
+        const values = [name,address,avg_delivery_time,cheeta_delivery,rating,introduce,picture,delivery_money,category_1Idx,category_2Idx];
+        const fields = 'name,address,avg_delivery_time,cheeta_delivery,rating,introduce,picture,delivery_money,category_1Idx,category_2Idx'
 
         const query = `INSERT INTO ${table}(${fields}) VALUES (${questions})`;
 

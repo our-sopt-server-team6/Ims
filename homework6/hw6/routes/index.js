@@ -12,3 +12,4 @@ router.use('/users',require('./users'));
 router.use('/store',require('./store'));
 router.use('/ads',require('./ads'));
 router.use('/category',require('./category_1'));
+router.use('/filter',require('./filter'));

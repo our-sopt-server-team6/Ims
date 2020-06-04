@@ -7,7 +7,7 @@ let responseMessage = require('../modules/responseMessage');
 
 const User = require('../models/user');
 
-router.post('/signup',async(req,res)=>{
+router.post('/signup',async(req,res)=>{ // users 값 저장이 0으로 됨
     const location = req.body;
     
     if(!location){

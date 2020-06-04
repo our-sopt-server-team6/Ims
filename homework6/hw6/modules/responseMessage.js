@@ -14,6 +14,10 @@ module.exports = {
     STORE_GET_DATA:"상점 정보 가져오기 성공",
     STORE_GET_FAIL:"상점 정보 값을 가져오는데 실패했습니다",
 
+    //카테고리
+    BIG_CATEGORY_FAIL:"대 카테고리 데이터 반환 실패",
+    MIDDLE_CATEGORY_FAIL:"중 카테고리 데이터 반환 실패",
+
     // 광고
     ADS_NULL:"광고 값이 없습니다.",
     ADS_SUCCESS:"광고배너 가져오기 성공",
