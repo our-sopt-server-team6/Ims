@@ -24,4 +24,20 @@ router.get('/local', async (req, res) => {
     }
     return res.json(util.success(CODE.OK, MSG.AUTH_SUCCESS));
 });
+
+router.post('/signin',async(req,res)=>{
+    // let user = {
+    //     id:"null",
+    //     password:"null"
+    // }
+    
+    let user = req.body;
+
+    console.log(user)
+
+    const {token, _} = await jwt.sign(user)
+
+    res.status(CODE.OK).send(util.success(CODE.OK,MSG.CREATED_USER,{token:token}))
+})
+
 module.exports = router;

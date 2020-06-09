@@ -1,12 +1,15 @@
 const pool = require('../modules/pool');
+let moment = require('moment')
 const table = 'post'
+const date = new Date();
 
 const post = {
-    addPost: async (author,title,content,createdAt)=>{
+    addPost: async (userIdx,title,content)=>{
         
-        const fields = 'author,title,content,createdAt';
+        const createdAt = moment(date).format()("YYYY-MM-DD HH:MM:SS")
+        const fields = 'userIdx,title,content,createdAt';
         const questions = '?,?,?,?';
-        const values = [author,title,content,createdAt];
+        const values = [userIdx,title,content,createdAt];
 
         const query = `INSERT INTO ${table}(${fields}) VALUES (${questions})`
 

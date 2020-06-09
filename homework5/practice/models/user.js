@@ -52,10 +52,9 @@ const user ={
         }
     },
     getUserById: async(idx)=>{
-        const query = `SELECT * FROM ${table} WHERE userIdx="${idx}"`;
+        const query = `SELECT * FROM ${table} WHERE id="${idx}"`;
         try{
             const result = await pool.queryParam(query);
-            console.log(result)
             return result;
         }catch(err){
             if (err.errno == 1062) {
