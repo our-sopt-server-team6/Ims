@@ -4,12 +4,12 @@ const table = 'post'
 const date = new Date();
 
 const post = {
-    addPost: async (userIdx,title,content)=>{
+    createPost: async (user_idx,title,content)=>{
         
-        const createdAt = moment(date).format()("YYYY-MM-DD HH:MM:SS")
-        const fields = 'userIdx,title,content,createdAt';
+        const createdAt = moment(date).format("YYYY-MM-DD HH:MM:SS")
+        const fields = 'user_idx,title,content,createdAt';
         const questions = '?,?,?,?';
-        const values = [userIdx,title,content,createdAt];
+        const values = [user_idx,title,content,createdAt];
 
         const query = `INSERT INTO ${table}(${fields}) VALUES (${questions})`
 
@@ -26,11 +26,24 @@ const post = {
             throw err;
         }
     },
+    getAllPost: async()=>{
+      const query = `SELECT * FROM ${table}`  
+      try{
+        const result = await pool.queryParam(query);
+        return result;
+      }catch(err){
+        if(err.errno===1062){
+            console.log('getPostById error :',err.errno,err.code);
+            return -1;
+        }
+        console.log('getPostById error ',err);
+        throw err;
+    }
+    },
     getPostById: async(id)=>{
-        const query = `SELECT * FROM ${table} WHERE authorIdx="${id}"`;
+        const query = `SELECT * FROM ${table} WHERE idx="${id}"`;
         try{
             const result = await pool.queryParam(query);
-            console.log(result)
             return result;
         }catch(err){
             if(err.errno===1062){
@@ -41,8 +54,8 @@ const post = {
             throw err;
         }
     },
-    update: async (id,title,content)=>{
-        const query = `UPDATE ${table} SET title="${title}", content="${content}" WHERE authorIdx = "${id}"`;
+    update: async (user_idx,idx,title,content)=>{
+        const query = `UPDATE ${table} SET user_idx="${user_idx}", title="${title}", content="${content}" WHERE idx = "${idx}"`;
         try{
             const result = await pool.queryParam(query);
             console.log(result);
@@ -56,8 +69,8 @@ const post = {
             throw err;
         }
     },
-    delete: async(id)=>{
-        const query = `DELETE FROM ${table} WHERE authorIdx="${id}"`
+    delete: async(idx)=>{
+        const query = `DELETE FROM ${table} WHERE idx="${idx}"`
 
         try{
             const result = await pool.queryParam(query);

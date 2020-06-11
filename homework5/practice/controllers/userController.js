@@ -10,7 +10,9 @@ exports.signup = async(req,res)=>{
         id,name,password,email
     } = req.body;
 
-    //null check
+    if(!id || !password || !name || !email){
+        return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST,responseMessage.NULL_VALUE))
+    }
 
     const salt = crypto.randomBytes(32).toString();
     const hashedPw = crypto.pbkdf2Sync(password,salt,1,32,'sha512').toString('hex');
@@ -26,16 +28,41 @@ exports.signin = async(req,res)=>{
         id,password
     } = req.body;
 
-    // null check
+    if(!id || !password){
+        return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST,responseMessage.NULL_VALUE))
+    }
 
-    // User.checkId
+    if(User.checkUser===false){
+        return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST,responseMessage.NO_USER))
+    }
 
-    const result = await User.getUserById(id);
+    const result = await User.signIn(id,password);
 
-    // result value check
+    if(result.length===false){
+        return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST,responseMessage.NULL_VALUE))
+    }
 
-    const tokenInfo = await jwt.sign(result[0]);
+    const user = await User.getUserById(id)
 
-    return res.status(statusCode.OK).send(util.success(statusCode.OK,responseMessage.CREATED_USER,{insertIdx:tokenInfo.token}))
+    const tokenInfo = await jwt.sign(user[0]);
 
+    return res.status(statusCode.OK).send(util.success(statusCode.OK,responseMessage.LOGIN_SUCCESS,{insertIdx:tokenInfo.token}))
+
+}
+
+exports.getUserById = async(req,res)=>{
+    const idx = req.userIdx;
+
+    console.log(idx)
+
+    if(idx===null){
+        return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST,responseMessage.NULL_VALUE))
+    }
+    const result = await User.getUserByIdx(idx);
+
+    if(result.length===0){
+        return res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST,responseMessage.NULL_VALUE))
+    }
+
+    return res.status(statusCode.OK).send(util.success(statusCode.OK,responseMessage.OK,{result:result}))
 }

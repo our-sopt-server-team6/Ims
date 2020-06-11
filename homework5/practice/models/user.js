@@ -1,5 +1,6 @@
 const pool = require('../modules/pool');
 const table = 'user';
+const crypto = require('crypto')
 
 const user ={
     signUp: async (id,name,password,salt,email)=>{
@@ -51,8 +52,41 @@ const user ={
             console.log('checkUser :',error)
         }
     },
-    getUserById: async(idx)=>{
-        const query = `SELECT * FROM ${table} WHERE id="${idx}"`;
+    getUserByIdx: async(idx)=>{
+        const query = `SELECT * FROM ${table} WHERE idx="${idx}"`;
+        try{
+            const result = await pool.queryParam(query);
+            return result;
+        }catch(err){
+            if (err.errno == 1062) {
+                console.log('getUserById ERROR : ', err.errno, err.code);
+                return -1;
+            }
+            console.log('getUserById ERROR : ', err);
+            throw err;
+        }
+    },
+    signIn: async(id,password)=>{
+        const query = `SELECT * FROM ${table} WHERE id="${id}"`;
+        try{
+            const result = await pool.queryParam(query);
+            const hashedPw = crypto.pbkdf2Sync(password,result[0].salt,1,32,'sha512').toString('hex');
+            if(result[0].password===hashedPw){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(err){
+            if (err.errno == 1062) {
+                console.log('getUserById ERROR : ', err.errno, err.code);
+                return -1;
+            }
+            console.log('getUserById ERROR : ', err);
+            throw err;
+        }
+    },
+    getUserById: async(id)=>{
+        const query = `SELECT * FROM ${table} WHERE id="${id}"`;
         try{
             const result = await pool.queryParam(query);
             return result;
