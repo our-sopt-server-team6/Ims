@@ -1,3 +1,5 @@
+### 이미지가 깨지는데... 클릭하면 잘 보입니다..!
+
 #### Postman Test
 
 ![1](https://user-images.githubusercontent.com/51740388/84600161-662f2980-aeb2-11ea-9554-51cd064fbeb6.JPG)

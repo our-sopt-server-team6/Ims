@@ -1,3 +1,6 @@
+### 이미지가 깨지는데... 클릭하면 잘 보입니다..!
+
+
 #### EC2 Array images
 
 ![ec2 array image](https://user-images.githubusercontent.com/51740388/84600165-67605680-aeb2-11ea-975f-0aa1ef29e62f.JPG)
