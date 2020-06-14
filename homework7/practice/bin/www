@@ -5,7 +5,7 @@
  */
 
 var app = require('../app');
-var debug = require('debug')('hw7:server');
+var debug = require('debug')('practice:server');
 var http = require('http');
 
 /**
